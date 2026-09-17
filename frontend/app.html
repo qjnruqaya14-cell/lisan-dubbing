@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاستوديو — لِسان</title>
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .studio{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--panel);border:1px solid var(--panel-line);margin:40px 0 60px;}
+  .studio-left{padding:40px;border-left:1px solid var(--panel-line);}
+  .studio-right{padding:40px;}
+
+  .dropzone{
+    border:1.5px dashed var(--panel-line);border-radius:var(--radius);
+    padding:38px 18px;text-align:center;color:var(--paper-dim);font-size:14px;margin-bottom:18px;
+    cursor:pointer;transition:.15s;
+  }
+  .dropzone.drag{border-color:var(--amber);background:var(--amber-dim);}
+  .dropzone strong{color:var(--paper);display:block;margin-bottom:6px;font-size:15.5px;}
+  .dropzone input{display:none;}
+  .file-chip{
+    display:none;align-items:center;gap:10px;background:var(--ink);border:1px solid var(--panel-line);
+    padding:11px 14px;border-radius:var(--radius);font-size:13px;margin-bottom:20px;
+  }
+  .file-chip.show{display:flex;}
+  .file-chip .x{margin-right:auto;margin-left:0;cursor:pointer;color:var(--paper-dim);}
+
+  .field-label{font-size:12.5px;color:var(--paper-dim);margin:0 0 9px;display:block;}
+  select, input[type=text]{
+    width:100%;background:var(--ink);border:1px solid var(--panel-line);color:var(--paper);
+    padding:12px 14px;border-radius:var(--radius);font-size:14px;margin-bottom:20px;font-family:inherit;
+  }
+  .hint{font-size:12px;color:var(--paper-dim);margin-top:-14px;margin-bottom:20px;}
+
+  .queue-title{font-size:13px;color:var(--paper-dim);margin-bottom:16px;}
+  .job-card{border:1px solid var(--panel-line);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+  .job-card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .job-card .top strong{font-size:13.5px;}
+  .status-pill{font-size:11.5px;padding:4px 10px;border-radius:20px;font-family:'IBM Plex Mono',monospace;}
+  .status-pill.processing{background:var(--amber-dim);color:var(--amber);}
+  .status-pill.done{background:var(--teal-dim);color:var(--teal);}
+  .status-pill.error{background:var(--danger-dim);color:var(--danger);}
+  .status-pill.queued{background:var(--panel-line);color:var(--paper-dim);}
+  .progress-bar{height:5px;background:var(--panel-line);border-radius:3px;overflow:hidden;margin-bottom:10px;}
+  .progress-bar span{display:block;height:100%;background:var(--amber);transition:width .4s;}
+  .job-msg{font-size:12.5px;color:var(--paper-dim);}
+  .job-actions{display:flex;gap:10px;margin-top:12px;}
+  .job-actions .btn{padding:9px 16px;font-size:13px;}
+  .empty-state{color:var(--paper-dim);font-size:13.5px;text-align:center;padding:30px 0;}
+
+  @media(max-width:760px){
+    .studio{grid-template-columns:1fr;}
+    .studio-left{border-left:none;border-bottom:1px solid var(--panel-line);}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <a class="brand" href="/index.html"><span class="dot"></span>لِسان</a>
+    <div class="navlinks">
+      <a href="/index.html">الرئيسية</a>
+    </div>
+  </nav>
+
+  <div class="studio">
+    <div class="studio-left">
+      <span class="field-label">الفيديو</span>
+      <div class="dropzone" id="dropzone">
+        <strong>اسحبي الفيديو هنا</strong>
+        أو اضغطي لاختيار ملف من جهازك
+        <input type="file" id="fileInput" accept="video/*">
+      </div>
+      <div class="file-chip" id="fileChip">
+        <span id="fileName"></span>
+        <span class="x" id="removeFile">✕</span>
+      </div>
+
+      <span class="field-label">لغة الدبلجة</span>
+      <select id="langSelect"></select>
+
+      <span class="field-label">معرّف الصوت (Voice ID) — اختياري</span>
+      <input type="text" id="voiceId" placeholder="اتركيه فارغًا لاستخدام الصوت الافتراضي">
+      <div class="hint">من مكتبة الأصوات بحساب ElevenLabs الخاص بالموقع.</div>
+
+      <button class="btn btn-amber btn-block" id="submitBtn" disabled>ابدئي الدبلجة</button>
+      <div class="hint" id="formError" style="color:var(--danger);display:none;"></div>
+    </div>
+
+    <div class="studio-right">
+      <div class="queue-title mono">مهامك</div>
+      <div id="jobsList">
+        <div class="empty-state">لا يوجد مهام بعد — ارفعي فيديو للبدء.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
