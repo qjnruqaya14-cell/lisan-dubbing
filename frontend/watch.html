@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مشاهدة الفيديو — لِسان</title>
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .watch-wrap{max-width:760px;margin:0 auto;padding:60px 24px;}
+  video{width:100%;border-radius:6px;border:1px solid var(--panel-line);background:#000;}
+  .watch-title{font-family:'Fraunces',serif;font-size:24px;margin:24px 0 8px;}
+  .watch-sub{color:var(--paper-dim);font-size:14px;margin-bottom:24px;}
+  .watch-actions{display:flex;gap:12px;flex-wrap:wrap;}
+  .state-box{text-align:center;padding:60px 20px;color:var(--paper-dim);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <a class="brand" href="/index.html"><span class="dot"></span>لِسان</a>
+  </nav>
+</div>
+
+<div class="watch-wrap" id="content">
+  <div class="state-box mono">جارٍ تحميل الفيديو…</div>
+</div>
+
+<script>
+  const jobId = location.pathname.split('/').filter(Boolean).pop();
+  const content = document.getElementById('content');
+
+  async function load() {
+    try {
+      const res = await fetch(`/api/jobs/${jobId}`);
+      if (!res.ok) {
+        content.innerHTML = `<div class="state-box mono">هذا الرابط غير موجود أو انتهت صلاحيته.</div>`;
+        return;
+      }
+      const job = await res.json();
+
+      if (job.status === 'done') {
+        content.innerHTML = `
+          <video controls src="${job.output_url}"></video>
+          <div class="watch-title">فيديو مدبلج</div>
+          <div class="watch-sub mono">اللغة: ${job.target_lang}</div>
+          <div class="watch-actions">
+            <a class="btn btn-amber" href="${job.output_url}" download>تنزيل الفيديو</a>
+            <a class="btn btn-ghost" href="/app.html">دبلجة فيديو آخر</a>
+          </div>
+        `;
+      } else if (job.status === 'error') {
+        content.innerHTML = `<div class="state-box mono">حدث خطأ أثناء معالجة هذا الفيديو: ${job.message || ''}</div>`;
+      } else {
+        content.innerHTML = `<div class="state-box mono">الفيديو لسا قيد المعالجة (${job.message || '...'}) — حدّثي الصفحة بعد شوي.</div>`;
+        setTimeout(load, 4000);
+      }
+    } catch (e) {
+      content.innerHTML = `<div class="state-box mono">تعذّر الاتصال بالسيرفر.</div>`;
+    }
+  }
+
+  load();
+</script>
+</body>
+</html>
