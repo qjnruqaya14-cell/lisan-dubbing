@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --ink:#11151C;
+  --panel:#181D27;
+  --panel-line:#262C38;
+  --paper:#EDEBE5;
+  --paper-dim:#9CA3B3;
+  --amber:#E8A33D;
+  --amber-dim:rgba(232,163,61,.14);
+  --teal:#3FBFAD;
+  --teal-dim:rgba(63,191,173,.14);
+  --danger:#E2685A;
+  --danger-dim:rgba(226,104,90,.14);
+  --radius:4px;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:'Inter',sans-serif;
+  line-height:1.55;
+}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.serif{font-family:'Fraunces',serif;}
+
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+/* ---------- NAV ---------- */
+nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:26px 0;border-bottom:1px solid var(--panel-line);
+}
+.brand{font-family:'Fraunces',serif;font-size:22px;font-weight:600;display:flex;align-items:center;gap:9px;}
+.brand .dot{width:8px;height:8px;background:var(--amber);border-radius:50%;}
+.navlinks{display:flex;gap:30px;font-size:14px;color:var(--paper-dim);}
+.navlinks a:hover{color:var(--paper);}
+.navcta{background:var(--amber);color:var(--ink);padding:10px 20px;border-radius:var(--radius);font-weight:600;font-size:14px;border:none;}
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  padding:13px 24px;border-radius:var(--radius);font-size:14.5px;font-weight:600;
+  border:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-amber{background:var(--amber);color:var(--ink);}
+.btn-amber:disabled{background:#4a4230;color:#8a8375;cursor:not-allowed;}
+.btn-ghost{background:transparent;border:1px solid var(--panel-line);color:var(--paper);}
+.btn-teal{background:var(--teal);color:var(--ink);}
+.btn-block{width:100%;}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--panel-line);padding:32px 0;display:flex;justify-content:space-between;color:var(--paper-dim);font-size:13px;flex-wrap:wrap;gap:12px;}
+
+@media(max-width:760px){
+  .navlinks{display:none;}
+}
